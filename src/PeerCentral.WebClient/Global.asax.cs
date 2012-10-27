@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using PeerCentral.WebClient.App_Start;
+using PeerCentral.WebClient.Configuration;
 using RestfulRouting;
 
 namespace PeerCentral.WebClient

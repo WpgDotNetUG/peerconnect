@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using NHibernate;
 using NHibernate.Linq;
 using Ninject;
@@ -40,7 +41,12 @@ namespace PeerCentral.WebClient.Configuration
             {
                 if (!s.Query<IUser>().Any())
                 {
-                    users.ForEach(u => s.Save(u));
+                    using (var t = s.BeginTransaction())
+                    {
+                        users.ForEach(u => s.Save(u));
+
+                        t.Commit();
+                    }
                 }
             }
 
@@ -52,15 +58,16 @@ namespace PeerCentral.WebClient.Configuration
     {
         public IQueryable<IBrag> All()
         {
-            return Enumerable.Range(1, 5).Select(i => new Brag()
-            {
-                Id = i,
-                Title = "Brag #" + i,
-                Description = "This is the wonderful world of Braggart #" + i,
-                SubmittedOn = DateTime.Now,
-                Author = new User { Id = i * 100, Name = "User #" + 1 }
-            }
-            ).AsQueryable().Take(0);
-		}
+            return Enumerable.Range(1, 5).Select(i => new Brag
+                                                          {
+                                                              Id = i,
+                                                              Title = "Brag #" + i,
+                                                              Description =
+                                                                  "This is the wonderful world of Braggart #" + i,
+                                                              SubmittedOn = DateTime.Now,
+                                                              Author = new User {Id = i*100, Name = "User #" + 1}
+                                                          }
+                ).AsQueryable().Take(0);
+        }
     }
 }
