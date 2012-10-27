@@ -4,5 +4,6 @@
     {
         void Login(IUser user);
         IUser CurrentUser { get; }
+        void Logout();
     }
 }

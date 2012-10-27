@@ -18,10 +18,16 @@ namespace PeerCentral.WebClient.Controllers
             ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
 
             return View(new IndexViewModel
-                            {
-                                CurrentUser = this._runtimeSession.CurrentUser
-                            });
+            {
+                CurrentUser = this._runtimeSession.CurrentUser
+            });
         }
 
+        public ActionResult Logout()
+        {
+            _runtimeSession.Logout();
+
+            return Redirect("~/");
+        }
     }
 }

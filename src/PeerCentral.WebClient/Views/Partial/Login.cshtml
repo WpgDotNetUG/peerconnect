@@ -1,17 +1,15 @@
 ﻿@model PeerCentral.Domain.IRuntimeSession
 
-@if (Model.CurrentUser != null)
-{    
-    <text>
-        Hello, @Model.CurrentUser.Name
-        <form method="POST" action="/login" id="logoutForm">
-            @Html.AntiForgeryToken()
-            @Html.HttpMethodOverride("DELETE");
-            <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
-        </form>
-    </text>
-} else {
+@if (Model.CurrentUser == null)
+{
     <ul>
-        <li><a href="login/new" id="loginLink">Login</a></li>
+        <li><a href="@Url.Content("~/login")" id="loginLink">Login</a></li>
+    </ul>
+}
+else
+{
+    <ul>
+        <li>Hello, @Model.CurrentUser.Name</li>
+        <li><a href="@Url.Content("~/logout")">Log out</a></li>
     </ul>
 }

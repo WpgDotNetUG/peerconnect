@@ -9,7 +9,7 @@
     NewSesionViewModel.prototype.loginUser = function(e) {
       var userId;
       userId = $(e.target).attr('data-id');
-      return $.post("/login", {
+      return $.post("/session", {
         id: userId
       }, function(data) {
         return window.location.replace("/");

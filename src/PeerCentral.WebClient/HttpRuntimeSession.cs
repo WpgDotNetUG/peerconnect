@@ -16,5 +16,10 @@ namespace PeerCentral.WebClient
         {
             get { return HttpContext.Current.Session[CURRENTUSERKEY] as IUser; }
         }
+
+        public void Logout()
+        {
+            HttpContext.Current.Session[CURRENTUSERKEY] = null;
+        }
     }
 }

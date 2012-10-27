@@ -5,7 +5,7 @@ class window.NewSesionViewModel
 
 	loginUser: (e) ->
 		userId = $(e.target).attr('data-id')
-		$.post "/login", {id: userId}, (data) -> window.location.replace("/");
+		$.post "/session", {id: userId}, (data) -> window.location.replace("/");
 		
 
 $ ->

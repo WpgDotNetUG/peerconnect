@@ -6,11 +6,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeerCentral.WebClient.UnitTests", "test\PeerCentral.WebClient.UnitTests\PeerCentral.WebClient.UnitTests.csproj", "{64E7CD88-2126-42D4-A7E2-E1DFBB8579D3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{39CEB348-E876-4012-B075-30A970668273}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeerCentral.Domain", "src\PeerCentral.Domain\PeerCentral.Domain.csproj", "{C125CBAE-8BA4-4EFF-997F-80940B48517F}"
 EndProject
