@@ -1,7 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using NHibernate;
+using Ninject;
 using Ninject.Modules;
+using Ninject.Web.Common;
 using PeerCentral.Domain;
+using PeerCentral.Storage.NHibernate;
 using PeerCentral.WebClient.Models;
 
 namespace PeerCentral.WebClient.Configuration
@@ -11,8 +14,16 @@ namespace PeerCentral.WebClient.Configuration
         public override void Load()
         {
             this.Bind<IRuntimeSession>().To<HttpRuntimeSession>();
-            this.Bind<IRepository<IUser>>().To<FakeUserRepository>();
             this.Bind<IRepository<IBrag>>().To<FakeBragRepository>();
+            this.Bind(typeof(IRepository<>)).To(typeof(NHRepository<>)).InRequestScope();
+
+            this.Bind<ISessionFactory>()
+                .ToMethod(x => SessionFactoryGateway.CreateSessionFactory())
+                .InSingletonScope();
+            
+            this.Bind<ISession>()
+                .ToMethod(x => x.Kernel.Get<ISessionFactory>().OpenSession())
+                .InRequestScope();
         }
     }
 
@@ -29,19 +40,6 @@ namespace PeerCentral.WebClient.Configuration
                 Author = new User { Id = i * 100, Name = "User #" + 1 }
             }
             ).AsQueryable().Take(0);
-        }
-    }
-
-    public class FakeUserRepository : IRepository<IUser>
-    {
-        public IQueryable<IUser> All()
-        {
-            return new[]
-                       {
-                           new User {Id = 1, Name = "Joe"},
-                           new User {Id = 2, Name = "Anne"},
-                           new User {Id = 3, Name = "Admin"}
-                       }.AsQueryable();
         }
     }
 }
