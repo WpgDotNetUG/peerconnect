@@ -46,7 +46,11 @@ namespace PeerCental.Storage.NHibernate.UnitTests
 
         private IEnumerable<IUser> Given_I_have_ten_users()
         {
-            var tenUsers = Enumerable.Range(1, 10).Select(i => MockRepository.GenerateMock<IUser>()).AsQueryable();
+            var tenUsers = Enumerable
+                .Range(1, 10)
+                .Select(i => new User { Id = i, Name = "User " + i});
+
+            tenUsers.ForEach(u => this._session.Save(u));
 
             return tenUsers;
         }
@@ -61,7 +65,7 @@ namespace PeerCental.Storage.NHibernate.UnitTests
                 .SetProperty(Environment.Dialect, typeof(SQLiteDialect).AssemblyQualifiedName)
                 .SetProperty(Environment.ConnectionDriver, typeof(SQLite20Driver).AssemblyQualifiedName)
                 .SetProperty(Environment.ConnectionString, "data source=:memory:")
-                .AddAssembly(Assembly.GetAssembly(typeof(IUser)));
+                .AddAssembly(Assembly.GetAssembly(typeof(User)));
 
             this._sessionFactory = this._configuration.BuildSessionFactory();
 
