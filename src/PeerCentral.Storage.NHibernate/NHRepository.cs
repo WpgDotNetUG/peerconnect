@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using NHibernate;
+using NHibernate.Linq;
 using PeerCentral.Domain;
 
 namespace PeerCentral.Storage.NHibernate
@@ -15,7 +16,7 @@ namespace PeerCentral.Storage.NHibernate
 
         public IQueryable<T> All()
         {
-            return Enumerable.Empty<T>().AsQueryable();
+            return this._session.Query<T>();
         }
     }
 }

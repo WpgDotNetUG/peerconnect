@@ -197,7 +197,6 @@
     </Compile>
     <Compile Include="HttpRuntimeSession.cs" />
     <Compile Include="Models\IRestfulResource.cs" />
-    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Configuration\Routes.cs" />
     <Compile Include="Views\Home\DashboardViewModel.cs">
@@ -317,6 +316,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Filters\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
