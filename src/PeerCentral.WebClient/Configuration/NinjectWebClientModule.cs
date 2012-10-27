@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using NHibernate;
+using NHibernate.Linq;
 using Ninject;
 using Ninject.Modules;
 using Ninject.Web.Common;
@@ -18,15 +19,35 @@ namespace PeerCentral.WebClient.Configuration
             this.Bind(typeof(IRepository<>)).To(typeof(NHRepository<>)).InRequestScope();
 
             this.Bind<ISessionFactory>()
-                .ToMethod(x => SessionFactoryGateway.CreateSessionFactory())
+                .ToMethod(x => SeedUsers(SessionFactoryGateway.CreateSessionFactory()))
                 .InSingletonScope();
             
             this.Bind<ISession>()
                 .ToMethod(x => x.Kernel.Get<ISessionFactory>().OpenSession())
                 .InRequestScope();
         }
-    }
 
+        public ISessionFactory SeedUsers(ISessionFactory factory)
+        {
+            var users = new[]
+                       {
+                           new User {Name = "Joe"},
+                           new User {Name = "Anne"},
+                           new User {Name = "Admin"}
+                       };
+
+            using (var s = factory.OpenSession())
+            {
+                if (!s.Query<IUser>().Any())
+                {
+                    users.ForEach(u => s.Save(u));
+                }
+            }
+
+            return factory;
+        }
+	}
+	
     public class FakeBragRepository : IRepository<IBrag>
     {
         public IQueryable<IBrag> All()
@@ -40,6 +61,6 @@ namespace PeerCentral.WebClient.Configuration
                 Author = new User { Id = i * 100, Name = "User #" + 1 }
             }
             ).AsQueryable().Take(0);
-        }
+		}
     }
 }
