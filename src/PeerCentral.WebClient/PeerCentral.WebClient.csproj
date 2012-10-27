@@ -44,6 +44,9 @@
       <HintPath>..\..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="MySql.Data">
+      <HintPath>..\..\packages\MySql.Data.6.5.4\lib\net40\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate">
       <HintPath>..\..\packages\NHibernate.3.3.2.4000\lib\Net35\NHibernate.dll</HintPath>
     </Reference>
