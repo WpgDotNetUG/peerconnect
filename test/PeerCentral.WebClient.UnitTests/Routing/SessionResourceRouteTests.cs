@@ -8,7 +8,7 @@ using RestfulRouting;
 
 namespace PeerCentral.WebClient.UnitTests.Routing
 {
-    public class RouteTests
+    public class SessionResourceRouteTests
     {
         [SetUp]
         public void Setup()
@@ -27,13 +27,13 @@ namespace PeerCentral.WebClient.UnitTests.Routing
         [Test]
         public void ItShouldMapLogin()
         {
-            "~/login".WithMethod(HttpVerbs.Get).ShouldMapTo<SessionController>(c => c.New());
+            "~/login".ShouldMapTo<SessionController>(c => c.New());
         }
 
         [Test]
         public void ItShouldMapLogout()
         {
-            "~/logout".WithMethod(HttpVerbs.Get).ShouldMapTo<HomeController>(c => c.Logout());
+            "~/logout".ShouldMapTo<HomeController>(c => c.Logout());
         }
 
         [Test]

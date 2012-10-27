@@ -1,8 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Web.Mvc;
 using PeerCentral.Domain;
-using PeerCentral.WebClient.Models;
 
 namespace PeerCentral.WebClient.Controllers
 {

@@ -14,10 +14,7 @@ namespace PeerCentral.WebClient.Configuration
             map.Root<HomeController>(c => c.Index());
 
             // use the standard restful routes for managing runtime Sessions:
-            map.Resource<SessionController>(c =>
-            {
-                c.Only("create", "new", "destroy");
-            });
+            map.Resource<SessionController>(c => c.Only("create", "new", "destroy"));
 
             // add human-friendly shortcuts for logging in and out:
             map.Path("login").GetOnly().To<SessionController>(c => c.New()); 
