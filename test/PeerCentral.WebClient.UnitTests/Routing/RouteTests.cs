@@ -8,7 +8,7 @@ using RestfulRouting;
 
 namespace PeerCentral.WebClient.UnitTests.Routing
 {
-    public class SessionResourceRouteTests
+    public class RouteTests
     {
         [SetUp]
         public void Setup()

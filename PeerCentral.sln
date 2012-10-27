@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{39CEB3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeerCentral.Domain", "src\PeerCentral.Domain\PeerCentral.Domain.csproj", "{C125CBAE-8BA4-4EFF-997F-80940B48517F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unit Tests", "Unit Tests", "{D98A2CD6-2FC4-4D5F-A741-65F2206462CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{64E7CD88-2126-42D4-A7E2-E1DFBB8579D3} = {D98A2CD6-2FC4-4D5F-A741-65F2206462CB}
 	EndGlobalSection
 EndGlobal

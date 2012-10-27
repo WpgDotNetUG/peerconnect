@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IBrag.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="IRuntimeSession.cs" />
     <Compile Include="IUser.cs" />

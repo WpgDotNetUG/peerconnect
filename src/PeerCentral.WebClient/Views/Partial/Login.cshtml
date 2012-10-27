@@ -1,15 +1,15 @@
-﻿@model PeerCentral.Domain.IRuntimeSession
+@model PeerCentral.Domain.IRuntimeSession
 
-@if (Model.CurrentUser == null)
+@if (Model.IsAuthenticated)
 {
     <ul>
-        <li><a href="@Url.Content("~/login")" id="loginLink">Login</a></li>
+        <li>Hello, @Model.GetCurrentUser().Name</li>
+        <li><a href="@Url.Content("~/logout")">Log out</a></li>
     </ul>
 }
 else
 {
     <ul>
-        <li>Hello, @Model.CurrentUser.Name</li>
-        <li><a href="@Url.Content("~/logout")">Log out</a></li>
+        <li><a href="@Url.Content("~/login")" id="loginLink">Login</a></li>
     </ul>
 }

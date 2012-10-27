@@ -1,4 +1,4 @@
-﻿using System.Web.Mvc;
+using System.Web.Mvc;
 using PeerCentral.Domain;
 using PeerCentral.WebClient.Views.Home;
 
@@ -7,20 +7,26 @@ namespace PeerCentral.WebClient.Controllers
     public class HomeController : Controller
     {
         private readonly IRuntimeSession _runtimeSession;
+        private readonly IRepository<IBrag> _bragRepository;
 
-        public HomeController(IRuntimeSession runtimeSession)
+        public HomeController(IRuntimeSession runtimeSession, IRepository<IBrag> bragRepository)
         {
             _runtimeSession = runtimeSession;
+            _bragRepository = bragRepository;
         }
 
         public ActionResult Index()
         {
-            ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
-
-            return View(new IndexViewModel
+            if (!_runtimeSession.IsAuthenticated)
             {
-                CurrentUser = this._runtimeSession.CurrentUser
-            });
+                return View("Home");
+            }
+
+            return View("Dashboard", new DashboardViewModel
+                                         {
+                                             CurrentUser = this._runtimeSession.GetCurrentUser(),
+                                             RecentBrags = this._bragRepository.All()
+                                         });
         }
 
         public ActionResult Logout()

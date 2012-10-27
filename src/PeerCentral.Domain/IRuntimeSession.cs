@@ -3,7 +3,8 @@
     public interface IRuntimeSession
     {
         void Login(IUser user);
-        IUser CurrentUser { get; }
+        bool IsAuthenticated { get; }
+        IUser GetCurrentUser();
         void Logout();
     }
 }

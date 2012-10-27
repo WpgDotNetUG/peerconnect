@@ -12,9 +12,14 @@ namespace PeerCentral.WebClient
             HttpContext.Current.Session[CURRENTUSERKEY] = user;
         }
 
-        public IUser CurrentUser
+        public IUser GetCurrentUser()
         {
-            get { return HttpContext.Current.Session[CURRENTUSERKEY] as IUser; }
+            return HttpContext.Current.Session[CURRENTUSERKEY] as IUser;
+        }
+
+        public bool IsAuthenticated
+        {
+            get { return GetCurrentUser() != null; }
         }
 
         public void Logout()

@@ -10,7 +10,7 @@ using Rhino.Mocks;
 
 namespace PeerCentral.WebClient.UnitTests.Controllers
 {
-    public class SessionControllerTest
+    public class SessionControllerTests
     {
         private SessionController _controller;
         private TestControllerBuilder _builder;
