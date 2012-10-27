@@ -2,8 +2,10 @@
 
 namespace PeerCentral.Domain
 {
-    public interface IRepository<out T>
+    public interface IRepository<T>
     {
         IQueryable<T> All();
+
+        void Save(T item);
     }
 }

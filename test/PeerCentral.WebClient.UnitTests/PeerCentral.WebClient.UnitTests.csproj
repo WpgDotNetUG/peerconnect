@@ -89,6 +89,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\BragControllerTests.cs" />
     <Compile Include="Controllers\HomeControllerTests.cs" />
     <Compile Include="Controllers\SessionControllerTests.cs" />
     <Compile Include="Routing\RouteTests.cs" />
@@ -98,6 +99,10 @@
     <ProjectReference Include="..\..\src\PeerCentral.Domain\PeerCentral.Domain.csproj">
       <Project>{C125CBAE-8BA4-4EFF-997F-80940B48517F}</Project>
       <Name>PeerCentral.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\PeerCentral.Storage.NHibernate\PeerCentral.Storage.NHibernate.csproj">
+      <Project>{22707B69-F41E-4479-94CA-BF5380C25F40}</Project>
+      <Name>PeerCentral.Storage.NHibernate</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\PeerCentral.WebClient\PeerCentral.WebClient.csproj">
       <Project>{A54A0BF6-36E6-41EC-817F-B2DB39A981C4}</Project>

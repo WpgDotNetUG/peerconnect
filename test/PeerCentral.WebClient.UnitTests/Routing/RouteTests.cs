@@ -53,5 +53,17 @@ namespace PeerCentral.WebClient.UnitTests.Routing
         {
             "~/session".WithMethod(HttpVerbs.Delete).ShouldMapTo<SessionController>(c => c.Destroy());
         }
+
+        [Test]
+        public void ItShouldMapToBragNew()
+        {
+            "~/brags/new".WithMethod(HttpVerbs.Get).ShouldMapTo<BragController>(c => c.New());
+        }
+
+        [Test]
+        public void ItShouldMapToBragCreate()
+        {
+            "~/brags".WithMethod(HttpVerbs.Post).ShouldMapTo<BragController>(c => c.Create(null));
+        }
     }
 }

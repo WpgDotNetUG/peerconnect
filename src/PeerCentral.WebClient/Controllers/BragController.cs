@@ -1,44 +1,56 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using PeerCentral.Domain;
+using PeerCentral.Storage.NHibernate.Domain;
 using PeerCentral.WebClient.Models;
 
 namespace PeerCentral.WebClient.Controllers
 {
-    public class BragController : Controller, IRestfulResources<int?>
+    public class BragController : Controller
     {
-        public ActionResult Index()
-        {
-            throw new NotImplementedException();
-        }
+        private readonly IRuntimeSession _runtimeSession;
+        private IRepository<IBrag> _repository;
 
-        public ActionResult Show(int? id)
+        public BragController(IRuntimeSession runtimeSession, IRepository<IBrag> repository)
         {
-            throw new NotImplementedException();
+            _runtimeSession = runtimeSession;
+            _repository = repository;
         }
 
         public ActionResult New()
         {
-            throw new System.NotImplementedException();
+            var vm = new NewBragViewModel();
+
+            return View(vm);
         }
 
-        public ActionResult Create()
+        public ActionResult Create(NewBragViewModel viewModel)
         {
-            throw new NotImplementedException();
-        }
+            var brag = new Brag
+            {
+                Author = this._runtimeSession.GetCurrentUser(),
+                Title = viewModel.Title,
+                Description = viewModel.Description,
+                SubmittedOn = DateTime.Now
+            };
 
-        public ActionResult Edit(int? id)
-        {
-            throw new NotImplementedException();
-        }
+            this._repository.Save(brag);
 
-        public ActionResult Update(int? id)
-        {
-            throw new NotImplementedException();
+            return null;
         }
+    }
 
-        public ActionResult Destroy(int? id)
-        {
-            throw new NotImplementedException();
-        }
+    public class NewBragViewModel 
+    {
+        [Required]
+        public string Title { get; set; }
+
+        [Required]
+        [DataType(DataType.MultilineText)]
+        public string Description { get; set; }
+
+        [HiddenInput]
+        public int? AuthorId { get; set; }
     }
 }

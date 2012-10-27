@@ -18,5 +18,10 @@ namespace PeerCentral.Storage.NHibernate
         {
             return this._session.Query<T>();
         }
+
+        public void Save(T item)
+        {
+            this._session.SaveOrUpdate(item);
+        }
     }
 }
