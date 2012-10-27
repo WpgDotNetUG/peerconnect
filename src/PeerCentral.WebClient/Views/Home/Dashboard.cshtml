@@ -14,7 +14,7 @@
         @foreach (var brag in Model.RecentBrags)
         {
             <li>
-            <h4><span class="author">@brag.Author</span> says <em>@brag.Title</em></h4>
+            <h4><span class="author">@brag.Author.Name</span> says <em>@brag.Title</em></h4>
                 <p class="date">@brag.SubmittedOn</p>
                 <p>@brag.Description</p>
             </li>

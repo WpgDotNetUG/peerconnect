@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using MvcContrib.TestHelper;
 using NUnit.Framework;
@@ -69,7 +68,7 @@ namespace PeerCentral.WebClient.UnitTests.Controllers
             result.AssertViewRendered().ForView("Home");
         }
 
-        private void A_user_is_logged_in(int? id, string name)
+        private void A_user_is_logged_in(int id, string name)
         {
             var user = MockRepository.GenerateMock<IUser>();
 

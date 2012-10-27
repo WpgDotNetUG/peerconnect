@@ -1,7 +1,7 @@
 ﻿using System;
 using PeerCentral.Domain;
 
-namespace PeerCentral.WebClient.Models
+namespace PeerCentral.Storage.NHibernate
 {
     public class User : IUser
     {

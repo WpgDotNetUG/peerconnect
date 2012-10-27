@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Linq;
+using NHibernate;
+using NHibernate.Linq;
+using Ninject;
 using Ninject.Modules;
+using Ninject.Web.Common;
 using PeerCentral.Domain;
-using PeerCentral.WebClient.Models;
+using PeerCentral.Storage.NHibernate;
+using PeerCentral.Storage.NHibernate.Domain;
 
 namespace PeerCentral.WebClient.Configuration
 {
@@ -11,37 +16,56 @@ namespace PeerCentral.WebClient.Configuration
         public override void Load()
         {
             this.Bind<IRuntimeSession>().To<HttpRuntimeSession>();
-            this.Bind<IRepository<IUser>>().To<FakeUserRepository>();
-            this.Bind<IRepository<IBrag>>().To<FakeBragRepository>();
-        }
-    }
+            this.Bind(typeof(IRepository<>)).To(typeof(NHRepository<>)).InRequestScope();
 
-    public class FakeBragRepository : IRepository<IBrag>
-    {
-        public IQueryable<IBrag> All()
-        {
-            return Enumerable.Range(1, 5).Select(i => new Brag()
-            {
-                Id = i,
-                Title = "Brag #" + i,
-                Description = "This is the wonderful world of Braggart #" + i,
-                SubmittedOn = DateTime.Now,
-                Author = new User { Id = i * 100, Name = "User #" + 1 }
-            }
-            ).AsQueryable().Take(0);
+            this.Bind<ISessionFactory>()
+                .ToMethod(x => Seed(SessionFactoryGateway.CreateSessionFactory()))
+                .InSingletonScope();
+            
+            this.Bind<ISession>()
+                .ToMethod(x => x.Kernel.Get<ISessionFactory>().OpenSession())
+                .InRequestScope();
         }
-    }
 
-    public class FakeUserRepository : IRepository<IUser>
-    {
-        public IQueryable<IUser> All()
+        public ISessionFactory Seed(ISessionFactory factory)
         {
-            return new[]
+            var users = new[]
                        {
-                           new User {Id = 1, Name = "Joe"},
-                           new User {Id = 2, Name = "Anne"},
-                           new User {Id = 3, Name = "Admin"}
-                       }.AsQueryable();
+                           new User {Name = "Joe"},
+                           new User {Name = "Anne"},
+                           new User {Name = "Admin"}
+                       };
+
+            using (var s = factory.OpenSession())
+            {
+                if (!s.Query<IUser>().Any())
+                {
+                    using (var t = s.BeginTransaction())
+                    {
+                        users.ForEach(u =>
+                                          {
+                                              s.Save(u);
+
+                                              s.Save(CreateBragForUser(u));
+                                          });
+
+                        t.Commit();
+                    }
+                }
+            }
+
+            return factory;
+        }
+
+        private static IBrag CreateBragForUser(IUser user)
+        {
+            return new Brag
+                {
+                    Title = "Brag #" + user.Name,
+                    Description = "This is the wonderful world of Braggart #" + user.Name,
+                    SubmittedOn = DateTime.Now,
+                    Author = user
+                };
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using PeerCentral.WebClient.App_Start;
+using PeerCentral.WebClient.Configuration;
 using RestfulRouting;
 
 namespace PeerCentral.WebClient
@@ -20,8 +21,7 @@ namespace PeerCentral.WebClient
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-            AuthConfig.RegisterAuth();
+            RouteTable.Routes.MapRoutes<Routes>();
         }
     }
 }
