@@ -54,7 +54,7 @@
     <Compile Include="NHRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SessionFactoryGateway.cs" />
-    <Compile Include="User.cs" />
+    <Compile Include="Domain\User.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PeerCentral.Domain\PeerCentral.Domain.csproj">

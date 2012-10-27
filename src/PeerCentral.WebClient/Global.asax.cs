@@ -20,8 +20,7 @@ namespace PeerCentral.WebClient
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-            AuthConfig.RegisterAuth();
+            RouteTable.Routes.MapRoutes<Routes>();
         }
     }
 }

@@ -5,6 +5,7 @@ using Ninject.Modules;
 using Ninject.Web.Common;
 using PeerCentral.Domain;
 using PeerCentral.Storage.NHibernate;
+using PeerCentral.Storage.NHibernate.Domain;
 
 namespace PeerCentral.WebClient.Configuration
 {

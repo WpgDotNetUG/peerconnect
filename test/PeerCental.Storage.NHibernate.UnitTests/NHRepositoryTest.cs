@@ -1,32 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Reflection;
+using FluentNHibernate.Automapping;
+using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using NHibernate.Cfg;
-using NHibernate.Dialect;
-using NHibernate.Driver;
-using NHibernate.Linq;
 using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
 using PeerCentral.Domain;
 using PeerCentral.Storage.NHibernate;
-using Rhino.Mocks;
-using Environment = NHibernate.Cfg.Environment;
+using PeerCentral.Storage.NHibernate.Domain;
 
 namespace PeerCental.Storage.NHibernate.UnitTests
 {
-    public class NHRepositoryTest
+    public class NHRepositoryTest : IDisposable
     {
         private ISession _session;
-        private NHRepository<IUser> _sut;
-        private Configuration _configuration;
         private ISessionFactory _sessionFactory;
+        private NHRepository<IUser> _sut;
 
         [SetUp]
         public void Before_each_test()
         {
-            this.NHConfig();
+            this._session = this.BuildSession();
 
             this._sut = new NHRepository<IUser>(this._session);
         }
@@ -46,32 +44,48 @@ namespace PeerCental.Storage.NHibernate.UnitTests
 
         private IEnumerable<IUser> Given_I_have_ten_users()
         {
-            var tenUsers = Enumerable
-                .Range(1, 10)
-                .Select(i => new User { Id = i, Name = "User " + i});
-
-            tenUsers.ForEach(u => this._session.Save(u));
-
-            return tenUsers;
+            return Enumerable.Range(1, 10).Select(CreateUserInStorage);
         }
 
-
-        private void NHConfig()
+        private ISession BuildSession()
         {
-            if (_configuration != null) return;
+            this._sessionFactory = Fluently
+                .Configure()
+                .Database(SQLiteConfiguration
+                              .Standard
+                              .UsingFile(CreateTempDbTestFile())
+                              .ShowSql())
+                .Mappings(m => m.AutoMappings.Add(AutoMap
+                                                      .AssemblyOf<User>()
+                                                      .Where(t => t.Namespace.EndsWith("Domain"))))
+                .ExposeConfiguration(BuildSchema)
+                .BuildSessionFactory();
 
-            this._configuration = new Configuration()
-                .SetProperty(Environment.ReleaseConnections, "on_close")
-                .SetProperty(Environment.Dialect, typeof(SQLiteDialect).AssemblyQualifiedName)
-                .SetProperty(Environment.ConnectionDriver, typeof(SQLite20Driver).AssemblyQualifiedName)
-                .SetProperty(Environment.ConnectionString, "data source=:memory:")
-                .AddAssembly(Assembly.GetAssembly(typeof(User)));
+            return this._sessionFactory.OpenSession();
+        }
 
-            this._sessionFactory = this._configuration.BuildSessionFactory();
+        private static string CreateTempDbTestFile()
+        {
+            return Path.GetTempFileName();
+        }
 
-            this._session = this._sessionFactory.OpenSession();
+        private static void BuildSchema(Configuration config)
+        {
+            new SchemaExport(config).Create(true, true);
+        }
 
-            new SchemaExport(this._configuration).Execute(false, true, false, _session.Connection, null);
+        private IUser CreateUserInStorage(int id)
+        {
+            var u = new User { Id = id, Name = "User " + id };
+
+            this._session.Save(u);
+
+            return u;
+        }
+
+        public void Dispose()
+        {
+            this._session.Dispose();
         }
     }
 }
