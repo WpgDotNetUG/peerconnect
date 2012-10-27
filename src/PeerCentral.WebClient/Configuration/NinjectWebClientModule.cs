@@ -16,11 +16,10 @@ namespace PeerCentral.WebClient.Configuration
         public override void Load()
         {
             this.Bind<IRuntimeSession>().To<HttpRuntimeSession>();
-            this.Bind<IRepository<IBrag>>().To<FakeBragRepository>();
             this.Bind(typeof(IRepository<>)).To(typeof(NHRepository<>)).InRequestScope();
 
             this.Bind<ISessionFactory>()
-                .ToMethod(x => SeedUsers(SessionFactoryGateway.CreateSessionFactory()))
+                .ToMethod(x => Seed(SessionFactoryGateway.CreateSessionFactory()))
                 .InSingletonScope();
             
             this.Bind<ISession>()
@@ -28,7 +27,7 @@ namespace PeerCentral.WebClient.Configuration
                 .InRequestScope();
         }
 
-        public ISessionFactory SeedUsers(ISessionFactory factory)
+        public ISessionFactory Seed(ISessionFactory factory)
         {
             var users = new[]
                        {
@@ -43,7 +42,12 @@ namespace PeerCentral.WebClient.Configuration
                 {
                     using (var t = s.BeginTransaction())
                     {
-                        users.ForEach(u => s.Save(u));
+                        users.ForEach(u =>
+                                          {
+                                              s.Save(u);
+
+                                              s.Save(CreateBragForUser(u));
+                                          });
 
                         t.Commit();
                     }
@@ -52,22 +56,16 @@ namespace PeerCentral.WebClient.Configuration
 
             return factory;
         }
-	}
-	
-    public class FakeBragRepository : IRepository<IBrag>
-    {
-        public IQueryable<IBrag> All()
+
+        private static IBrag CreateBragForUser(IUser user)
         {
-            return Enumerable.Range(1, 5).Select(i => new Brag
-                                                          {
-                                                              Id = i,
-                                                              Title = "Brag #" + i,
-                                                              Description =
-                                                                  "This is the wonderful world of Braggart #" + i,
-                                                              SubmittedOn = DateTime.Now,
-                                                              Author = new User {Id = i*100, Name = "User #" + 1}
-                                                          }
-                ).AsQueryable().Take(0);
+            return new Brag
+                {
+                    Title = "Brag #" + user.Name,
+                    Description = "This is the wonderful world of Braggart #" + user.Name,
+                    SubmittedOn = DateTime.Now,
+                    Author = user
+                };
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using PeerCentral.Domain;
 
 namespace PeerCentral.Storage.NHibernate.Domain
@@ -8,5 +9,7 @@ namespace PeerCentral.Storage.NHibernate.Domain
         public virtual String Name { get; set; }
 
         public virtual int Id { get; set; }
+
+        public virtual IEnumerable<IBrag> Braggings { get; set; }
     }
 }

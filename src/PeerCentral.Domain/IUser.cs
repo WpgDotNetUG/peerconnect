@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PeerCentral.Domain
 {
@@ -6,5 +7,6 @@ namespace PeerCentral.Domain
     {
         String Name { get; set; }
         int Id { get; set; }
+        IEnumerable<IBrag> Braggings { get; }
     }
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using FluentNHibernate.Automapping;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
@@ -55,19 +54,11 @@ namespace PeerCental.Storage.NHibernate.UnitTests
                               .Standard
                               .UsingFile(CreateTempDbTestFile())
                               .ShowSql())
-                .Mappings(m => m.AutoMappings.Add(CreateAutomappings))
+                .Mappings(m => m.AutoMappings.Add(SessionFactoryGateway.CreateAutomappings))
                 .ExposeConfiguration(BuildSchema)
                 .BuildSessionFactory();
 
             return this._sessionFactory.OpenSession();
-        }
-
-        private static AutoPersistenceModel CreateAutomappings()
-        {
-            return AutoMap
-                .AssemblyOf<User>()
-                .Where(t => t.Namespace.EndsWith("Domain"))
-                .Override<Brag>(b => b.References<User>(r => r.Author));
         }
 
         private static string CreateTempDbTestFile()

@@ -18,16 +18,23 @@ namespace PeerCentral.Storage.NHibernate
                               .Standard
                               .UsingFile(@"C:\temp\peercentral.sqlite")
                               .ShowSql())
-                .Mappings(m => m.AutoMappings.Add(AutoMap
-                                                      .AssemblyOf<User>()
-                                                      .Where(t => t.Namespace.EndsWith("Domain"))))
+                .Mappings(m => m.AutoMappings.Add(CreateAutomappings))
                 .ExposeConfiguration(BuildSchema)
                 .BuildSessionFactory();
         }
 
         private static void BuildSchema(Configuration config)
         {
-            new SchemaExport(config).Create(true, true);
+            new SchemaExport(config).Create(false, true);
+        }
+
+        public static AutoPersistenceModel CreateAutomappings()
+        {
+            return AutoMap
+                .AssemblyOf<User>()
+                .Where(t => t.Namespace.EndsWith("Domain"))
+                .Override<Brag>(b => b.References<User>(r => r.Author))
+                .Override<User>(u => u.HasMany<Brag>(r => r.Braggings).KeyColumn("Author_id"));
         }
     }
 }
