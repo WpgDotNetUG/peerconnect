@@ -8,18 +8,43 @@ using Rhino.Mocks;
 
 namespace PeerCentral.WebClient.UnitTests.Controllers
 {
-    public class HomeControllerTests 
+    public class ControllerTests
+{
+        protected TestControllerBuilder _builder;
+        protected IRuntimeSession _runtimeSession;
+
+        public ControllerTests()
+        {
+            this._builder = new TestControllerBuilder();
+            this._runtimeSession = MockRepository.GenerateMock<IRuntimeSession>();
+        }
+
+        protected IUser A_user_is_logged_in(int id, string name)
+        {
+            var user = MockRepository.GenerateMock<IUser>();
+
+            user.Stub(u => u.Id).Return(id);
+            user.Stub(u => u.Name).Return(name);
+
+            this._runtimeSession.Stub(s => s.GetCurrentUser()).Return(user);
+            this._runtimeSession.Stub(s => s.IsAuthenticated).Return(true);
+
+            return user;
+        }
+
+        protected void No_user_is_logged_in()
+        {
+            this._runtimeSession.Stub(s => s.IsAuthenticated).Return(false);
+        }
+}
+    public class HomeControllerTests : ControllerTests
     {
         private HomeController _controller;
-        private TestControllerBuilder _builder;
-        private IRuntimeSession _runtimeSession;
         private IRepository<IBrag> _bragRepository;
 
         [SetUp]
         public void Setup()
         {
-            this._builder = new TestControllerBuilder();
-            this._runtimeSession = MockRepository.GenerateMock<IRuntimeSession>();
             this._bragRepository = MockRepository.GenerateMock<IRepository<IBrag>>();
             this._controller = _builder.CreateController<HomeController>(this._runtimeSession, this._bragRepository);
         }
@@ -66,22 +91,6 @@ namespace PeerCentral.WebClient.UnitTests.Controllers
 
             // Then
             result.AssertViewRendered().ForView("Home");
-        }
-
-        private void A_user_is_logged_in(int id, string name)
-        {
-            var user = MockRepository.GenerateMock<IUser>();
-
-            user.Stub(u => u.Id).Return(id);
-            user.Stub(u => u.Name).Return(name);
-
-            this._runtimeSession.Stub(s => s.GetCurrentUser()).Return(user);
-            this._runtimeSession.Stub(s => s.IsAuthenticated).Return(true);
-        }
-
-        private void No_user_is_logged_in()
-        {
-            this._runtimeSession.Stub(s => s.IsAuthenticated).Return(false);
         }
     }
 }
