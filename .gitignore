@@ -38,6 +38,7 @@ x64/
 .builds
 
 !src/PeerCentral.WebClient/x64
+!test/PeerCental.Storage.NHibernate.UnitTests/x64
 
 # Visual C++ cache files
 ipch/
