@@ -1,28 +1,32 @@
-﻿@model PeerCentral.WebClient.Views.Home.DashboardViewModel
+@model PeerCentral.WebClient.Views.Home.DashboardViewModel
 
 @{
     Model.PageTitle = "Dashboard [@Model.CurrentUser.Name] | PeerCentral";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<p class="welcome">Welcome @Model.CurrentUser.Name</p>
-
-@if (Model.RecentBrags.Any())
-{
-    <h2>Recent news: </h2>
-    <ul>
-        @foreach (var brag in Model.RecentBrags)
+<div class="row">
+    <div class="span12">
+    
+        @if (Model.RecentBrags.Any())
         {
-            <li>
-            <h4><span class="author">@brag.Author.Name</span> says <em>@brag.Title</em></h4>
-                <p class="date">@brag.SubmittedOn</p>
-                <p>@brag.Description</p>
-            </li>
-        } 
-    </ul>
-}
-else
-{
-    <h2>No one is bragging yet...</h2>
-    <p>@Html.ActionLink("Be the first!", "new", "brag")</p>
-}
+            <h1>Recent news: </h1>
+            <ul>
+                @foreach (var brag in Model.RecentBrags)
+                {
+                    <li>
+                        <h4><span class="author">@brag.Author.Name</span> says <em>@brag.Title</em></h4>
+                        <p class="date">@brag.SubmittedOn</p>
+                        <p>@brag.Description</p>
+                    </li>
+                } 
+            </ul>
+        }
+        else
+        {
+            <h1>No one is bragging yet...</h1>
+            <p>@Html.ActionLink("Be the first!", "new", "brag")</p>
+        }
+
+    </div>
+</div>

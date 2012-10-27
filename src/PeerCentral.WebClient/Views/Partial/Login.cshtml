@@ -2,14 +2,10 @@
 
 @if (Model.IsAuthenticated)
 {
-    <ul>
-        <li>Hello, @Model.GetCurrentUser().Name</li>
-        <li><a href="@Url.Content("~/logout")">Log out</a></li>
-    </ul>
+    <li><a>Hello, @Model.GetCurrentUser().Name</a></li>
+    <li><a href="@Url.Content("~/logout")">Log out</a></li>
 }
 else
 {
-    <ul>
-        <li><a href="@Url.Content("~/login")" id="loginLink">Login</a></li>
-    </ul>
+    <li><a href="@Url.Content("~/login")" id="loginLink">Login</a></li>
 }
