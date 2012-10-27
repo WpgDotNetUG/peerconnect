@@ -1,0 +1,75 @@
+
+twitter: @wpgdnug #mvc4coolness
+         Amir - @abarylko
+         David - @davidalpert
+
+web: https://github.com/WpgDotNetUG/peerconnect
+
+git: git://github.com/WpgDotNetUG/peerconnect.git
+
+participant learning goals:
+- learn about MVC (develop some comfort using it)
+- What is different between MVC4 and:
+  - web forms
+  - MVC2
+- Be convinced (that learning/migrating from web forms is worth it)
+- Learn about TDD/testing patterns with MVC
+
+retrospective:
+
+- could use a list of the packages to help me not get lost when digging into this example on my own and help me start a new project.
+
+- spent a lot of time on setup, maybe wasted time, maybe realistic
+
+- it would be useful to have a video walkthrough of setting up the environment from a vanilla visual studio
+
+- it was valuable to see an example of how to develop (build first, tests first), not much learning about mvc
+
+- mvc is a lot more about having a clear path and conventions as opposed to coding on the page, the conventions express clear boundaries of responsibility
+
+- not enough exposure to be convinced to use mvc over web forms, more mvc basics would be helpful
+
+- mvc implements a subscribe/response mode where actions respond to urls much better than web forms
+
+- mvc supports isolation of logic from web concerns much better than web forms
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
