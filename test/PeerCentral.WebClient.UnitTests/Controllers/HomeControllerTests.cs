@@ -26,15 +26,15 @@ namespace PeerCentral.WebClient.UnitTests.Controllers
             user.Stub(u => u.Id).Return(id);
             user.Stub(u => u.Name).Return(name);
 
-            this._runtimeSession.Stub(s => s.GetCurrentUser()).Return(user);
-            this._runtimeSession.Stub(s => s.IsAuthenticated).Return(true);
+            this._runtimeSession.Stub(s => s.GetCurrentUser()).Return(user).Repeat.Once();
+            this._runtimeSession.Stub(s => s.IsAuthenticated).Return(true).Repeat.Once();
 
             return user;
         }
 
         protected void No_user_is_logged_in()
         {
-            this._runtimeSession.Stub(s => s.IsAuthenticated).Return(false);
+            this._runtimeSession.Stub(s => s.IsAuthenticated).Return(false).Repeat.Once();
         }
 }
     public class HomeControllerTests : ControllerTests
